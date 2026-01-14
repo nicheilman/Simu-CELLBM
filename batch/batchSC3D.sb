@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash --login
 
 #SBATCH --job-name=simucell3D
 #SBATCH --nodes=1        
@@ -8,11 +8,12 @@
 #SBATCH --time=06:00:00
 #SBATCH --mail-user=heilman7@msu.edu                
 #SBATCH --mail-type=FAIL,END
-#SBATCH --chdir=/mnt/home/heilman7/2024_runser_simucell3d
+#SBATCH --chdir=/mnt/home/heilman7/simucell_LBM
 #SBATCH --output=%x-%j.out
 
+module purge
 module load powertools
-module load OpenMPI/4.0.3 
+module load OpenMPI/4.1.5-GCC-12.3.0 
 module load GCC
 
 if [ -n "$SLURM_CPUS_PER_TASK" ]; then
@@ -22,7 +23,7 @@ else
 fi
 export OMP_NUM_THREADS=$omp_threads
 
-./build/simucell3d parameters_packed.xml 
+./build/simucell3d parameters/parameters_RBC.xml 
 
 seff $SLURM_JOBID
 mv simucell3D-$SLURM_JOBID.out simulation_results/SLURM/

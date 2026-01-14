@@ -16,7 +16,7 @@
 <numerical_parameters>
     <!-- The mesh file containing the initial configuration <! -->
 
-    <input_mesh_file_path>/data/input_meshes/RBC_1.vtk</input_mesh_file_path> 
+    <input_mesh_file_path>/data/input_meshes/RBC.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
     <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_RBC</output_mesh_folder_path> 
@@ -32,10 +32,10 @@
     <damping_coefficient>1.0e-9</damping_coefficient> 
 
     <!-- The total simulation time [T] <! -->
-    <simulation_duration>2.0e-3</simulation_duration> 
+    <simulation_duration>1.1e-4</simulation_duration> 
 
     <!-- The time between each mesh file saving [T]<! -->
-    <sampling_period>1.0e-6</sampling_period> 
+    <sampling_period>1.0e-5</sampling_period> 
 
     <!-- The simulation time step [T]<! -->
     <time_step>1.0e-7</time_step> 

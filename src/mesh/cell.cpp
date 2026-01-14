@@ -1572,12 +1572,12 @@ void cell::periodicBCs() noexcept{
 
    //First get the centroid of the cell
     const vec3 centroid = get_centroid();
-if(get_cell_type_id() == 0){
-    if (centroid.dz() <= -0.75e-5){
-	const vec3 transvect(0., 0., 1.5e-5);
+if(get_cell_type_id() == 5){
+    if (centroid.dz() < -2.5e-5){
+	const vec3 transvect(0., 0., 5.0e-5);
         translate(transvect);	
-    } else if (centroid.dz() >= 0.75e-5){
-        const vec3 transvect(0., 0., -1.5e-5);
+    } else if (centroid.dz() >= 2.5e-5){
+        const vec3 transvect(0., 0., -5.0e-5);
         translate(transvect);
 		}
 
