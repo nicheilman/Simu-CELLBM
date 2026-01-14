@@ -39,7 +39,11 @@ private:
     {std::make_pair(1, 3), std::make_pair(0.0e8, 0.0e8)},
     {std::make_pair(3, 2), std::make_pair(0.0e8, 0.0e8)},
     {std::make_pair(2, 3), std::make_pair(0.0e8, 0.0e8)},
-    {std::make_pair(3, 3), std::make_pair(0.0e7, 1.0e10)}
+    {std::make_pair(3, 3), std::make_pair(0.0e7, 1.0e10)},
+
+    {std::make_pair(5, 5), std::make_pair(0.0e11, 1.0e9)},
+    {std::make_pair(0, 5), std::make_pair(0.0e11, 1.0e9)},
+    {std::make_pair(5, 0), std::make_pair(0.0e11, 1.0e9)}
   };  // (celltype id , cell type id) -> (adherence_strength, repulsion_strength)
 };  // OurContactModel
 
