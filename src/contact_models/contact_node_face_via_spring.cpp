@@ -191,9 +191,9 @@ void contact_node_face_via_spring::apply_contact_forces(cell_ptr c1, node &n, fa
         }
 
         // Do the same of the node belongs to a nucleus and the face to an epithelial cell
-        if(( (c1->get_cell_type_id() == 3 || c2->get_cell_type_id() == 0) ||
+        if(0)/*(( (c1->get_cell_type_id() == 3 || c2->get_cell_type_id() == 0) ||
 	      (c1->get_cell_type_id() == 0 || c2->get_cell_type_id() == 3))
-	 && c1->get_paired_cell_ptr() == c2)
+	 && c1->get_paired_cell_ptr() == c2)*/
         {
 	std::cout<<c1->get_paired_cell_ptr()<<", "<<c2<<std::endl;
             adhesive_contact = !adhesive_contact;
