@@ -27,6 +27,7 @@ array<double, 6> aabb;
 //for(auto& cell_ : cell_lst) aabb = cell_->get_aabb();
 
 vec3 F;
+std::vector<double> zero = {0., 0., 0.};
 
 for(auto& node_ : L_->get_nodes() ){ //  
 
@@ -49,12 +50,13 @@ if(cell_->get_cell_type_id() != 2){
     (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
     (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
          if(node_->is_internal(cell_,aabb)){
-		node_->set_internal(1, velo); break;}
+		node_->set_internal(1);
+		node_->set_velocity(zero); break;}
 	 else continue;
-    node_->set_internal(0, velo);};}
+    node_->set_internal(0);};}
     else{
 	if(node_->is_internal(cell_,aabb)) continue;   //node_->set_internal(0, velo); break;}
-        else node_->set_internal(1, velo);
+        else node_->set_internal(1);
         };
     };
 
@@ -68,8 +70,8 @@ if(cell_->get_cell_type_id() != 2){
     (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
     (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
          if(node_->is_internal(cell_,aabb)){
-                node_->set_internal(1, velo); break;}
-         else node_->set_internal(0, velo);
+                node_->set_internal(1); break;}
+         else node_->set_internal(0);
 	    };
 	};
     };
@@ -78,7 +80,9 @@ if(cell_->get_cell_type_id() != 2){
 
 //------------------------------
 
-	if(node_->get_internal()) continue;
+for(int i =0; i<3; i++) velo[i] = 0.;
+
+	if(node_->get_internal()){node_->set_velocity(zero); continue;}
 
 // Only fluid nodes near the IB need to be looked at //
 // Will be best to use Bounding Box //
@@ -108,12 +112,17 @@ if(cell_->get_cell_type_id() == 2) continue;
 		//if(node_->get_internal()) continue;
             kernel = (1 - abs( dist_x/mesh_space/2)) * (1 - abs( dist_y/mesh_space/2)) * (1 - abs( dist_z/mesh_space/2));
             for(int i=0; i<3; i++) force_[i] = (IB_node_.momentum().to_array()[i]-1*node_->get_m()[i+1]/node_->get_m()[0]) * kernel * dt_ / mesh_space  ;
+
+for(int i =0; i<3; i++) velo[i] += IB_node_.momentum().to_array()[i]; 
+
 	    F = vec3(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
 	    IB_node_.add_force(F/dt_*mesh_space);
         }
     }
   }
 }
+
+node_->update_velo(velo);
 
 //----------------------------------------------------------------------
 
@@ -137,7 +146,7 @@ if(int(t/dt_) % 5 == -1){
 MeshWriter::writeflagVTK("test2/test_flag_"+to_string((t))+".vtk", flag_mesh, flag_->get_IB_nodes() );
     }
 if(int(t/dt_) % 10 == -1){
-MeshWriter::writeVTK("test2/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
+MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_RBC_1/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
     }
 
 

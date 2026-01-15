@@ -18,6 +18,10 @@ class LBM_node: public std::enable_shared_from_this<LBM_node>{
     bool internal_;
     int wallflag_, idx_;
 
+// TEST 
+std::vector<double> velo_ = {0., 0., 0.};
+bool need_update_ = 0;
+
     static constexpr double wk[19] = {3., 18., 18., 18., 18., 18., 18., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36.};
 
     public:
@@ -44,8 +48,17 @@ class LBM_node: public std::enable_shared_from_this<LBM_node>{
     void set_f_wall(int i, int j, double c_i){f_tmp[i] = f_[j] + (c_i / wk[i]); return;}; 
     void set_f_p(int i, std::shared_ptr<LBM_node> node_){f_tmp[i] = f_eq[i] /*node_->get_f_eq()[i]*/; return;};
     void update_f(){for(int i=1; i<velo_dim; i++)f_[i] = f_tmp[i]; return;};
+
     void set_velocity(std::vector<double> velo){m_[1]=velo[0]*m_[0]; m_[2]=velo[1]*m_[0]; m_[3]=velo[2]*m_[0]; return;}
-    void set_internal(bool onoff, std::vector<double> velo){ internal_ =  onoff;  return;}
+void update_velo(std::vector<double> wall_velo){for(int i=0; i<3; i++)velo_[i] = wall_velo[i]; return;}
+    void set_internal(bool onoff){ 
+if( (internal_==1) && (onoff==0)) need_update_ = 1;
+	internal_ =  onoff; 
+	if(need_update_){
+		set_velocity(velo_);
+		need_update_ = 0;
+		} 
+	return;}
 
     void ftom(shared_ptr<lattice> L, bool flag);
     void calc_eq();

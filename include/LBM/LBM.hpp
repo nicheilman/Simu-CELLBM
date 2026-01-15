@@ -9,7 +9,7 @@ class LBM{
 
 private:
 
-    int mesh_size = 21;
+    int mesh_size = 31;
     double dimensions[3] = {6.0e-5, 6.0e-5, 6.0e-5};
     double dt_;
  // ------------------------------------------- //
@@ -20,7 +20,7 @@ private:
     int mesh[3] = {mesh_size*int(dimensions[0]/min_dim), mesh_size*int(dimensions[1]/min_dim), mesh_size*int(dimensions[2]/min_dim)};
     int flag_mesh[3] = {0, 0, 0}; //2*mesh[0], 2*mesh[1], 0}; // Must be ~2x the fluid mesh spacing
     double force_[3]; // = {0., 0., 0.};
-    vector<double> velo = {0., 0., 1.0};
+    vector<double> velo = {0., 0., 0.};
     vector<double> shift = {0., 0., 0.};
     double mesh_space = dimensions[0]/mesh_size ;
     double dist, dist_x, dist_y, dist_z, kernel;

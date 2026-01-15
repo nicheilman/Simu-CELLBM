@@ -74,25 +74,25 @@ if(node_->get_wallflag() == 1){
 
 
     if(almost_equal(node_->get_pos()[0], origin[0])){
-        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 4.0e-11*c_i[i][2] * c );} 
+        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 0.0e-11*c_i[i][2] * c );} 
 	 }
     if(almost_equal(node_->get_pos()[0], domain_size_[0]+origin[0])){
-        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -4.0e-11*c_i[i][2] * c );} 
+        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -0.0e-11*c_i[i][2] * c );} 
 	 }
 
-/*
+
 //-------------
-if(node_->get_pos()[1] == origin){
+if(almost_equal(node_->get_pos()[1], origin[1])){
         if(c_i[i][1] == 1){node_->set_f_wall(i, bd_flip(i, 1), 0.0*c_i[i][2]/c );}
 	if(c_i[i][1] == 0){node_->set_f_wall(i, bd_flip(i, 2), 0.0*c_i[i][2]/c );}
          }
-    if(node_->get_pos()[1] == domain_size_[1]+origin){
+    if(almost_equal(node_->get_pos()[1], domain_size_[1]+origin[1])){
         if(c_i[i][1] == -1){node_->set_f_wall(i, bd_flip(i, 1), -0.0*c_i[i][2]/c );}
 	if(c_i[i][1] == 0){node_->set_f_wall(i, bd_flip(i, 2), -0.0*c_i[i][2]/c );}
          }
 //-------------
-*/
-/*/-------------
+
+//-------------
 
 if(node_->get_pos()[2] == origin[2]){
         if(c_i[i][2] == 1){node_->set_f_p(i, node_lst_[node_->get_idx()]);}
@@ -101,7 +101,7 @@ if(node_->get_pos()[2] == domain_size_[2]+origin[2]){
         if(c_i[i][2] == -1){node_->set_f(node_lst_[node_->get_idx()-1], i);}
          }
 
-//-------------*/
+//-------------
 
       }
    }

@@ -412,7 +412,7 @@
         <!-- If the absolute value of the mean curvature at a point is above this value, then the point cannot be coupled to another cell surface [1 / L] <! -->
         <surface_coupling_max_curvature>1e6</surface_coupling_max_curvature>
 
-        <FENE_stiffness>2.0e-6</FENE_stiffness>
+        <FENE_stiffness>4.0e-6</FENE_stiffness>
 
         <!-- The cell might have different face types with different mechanical properties <! -->
         <face_types>
@@ -431,7 +431,7 @@
                 <surface_tension>1.0e-3</surface_tension>
 
                 <!-- The bending elasticity of the cell surface [M L / T^2] <! -->
-                <bending_modulus>1.0e-12</bending_modulus>
+                <bending_modulus>2.0e-12</bending_modulus>
             </face_type>
         </face_types>
     </cell_type>

@@ -1571,13 +1571,13 @@ void cell::periodicBCs() noexcept{
     assert(cell_type_ != nullptr);
 
    //First get the centroid of the cell
-    const vec3 centroid = get_centroid();
+    const vec3 centroid = compute_centroid();
 if(get_cell_type_id() == 5){
     if (centroid.dz() < -2.5e-5){
 	const vec3 transvect(0., 0., 5.0e-5);
         translate(transvect);	
-    } else if (centroid.dz() >= 2.5e-5){
-        const vec3 transvect(0., 0., -5.0e-5);
+    } else if (centroid.dz() >= 0.25e-5){
+        const vec3 transvect(0., 0., -0.5e-5);
         translate(transvect);
 		}
 
@@ -1778,10 +1778,10 @@ void cell::apply_internal_forces(const double time_step, const double min_edge_l
         //Calculate the mean curvature at the node as well as the surface normal
         compute_node_curvature_and_normals();
 
+    #endif
+
 // MY B.C
 periodicBCs();
-
-    #endif
 
 }
 //---------------------------------------------------------------------------------------------------------
