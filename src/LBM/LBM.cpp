@@ -28,6 +28,7 @@ array<double, 6> aabb;
 
 vec3 F;
 std::vector<double> zero = {0., 0., 0.};
+int count;
 
 for(auto& node_ : L_->get_nodes() ){ //  
 
@@ -88,28 +89,24 @@ for(int i =0; i<3; i++) velo[i] = 0.;
 // Will be best to use Bounding Box //
 for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
-
+    count = 0;
+    
 if(cell_->get_cell_type_id() == 2) continue;
-// std::cout<< "Taking a look at Cell:"<< cell_->get_id() << std::endl;
 
     if( (node_->get_pos()[0] >= aabb[0]-2*mesh_space)&&(node_->get_pos()[0] <= aabb[3]+2*mesh_space) && 
     (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
     (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
-//  for(auto& cell_ : cell_lst){
-//	if(t >= 0.){node_->set_internal(node_->is_internal(cell_,aabb), velo);}
+
     for(node& IB_node_ : cell_->node_lst_ ) {
 
         dist_x = (node_->get_pos()[0] - IB_node_.pos().dx()) ;
         dist_y = (node_->get_pos()[1] - IB_node_.pos().dy()) ;
         dist_z = (node_->get_pos()[2] - IB_node_.pos().dz()) ;
 
-/* Internal nodes are treated as solid, Do not need IB consideration */
-        //if(t == 0.){node_->set_internal(node_->is_internal(cell_,aabb), velo);}  //{if(node_->is_internal(cell_, aabb)) node_->set_internal(velo);}
-
         dist = dist_x*dist_x + dist_y*dist_y + dist_z*dist_z;
-        dist = sqrt(dist);
-        if(dist <= 2*mesh_space ){
-		//if(node_->get_internal()) continue;
+        //dist = sqrt(dist);
+        if(dist*dist <= 4*mesh_space*mesh_space ){
+	    count++;
             kernel = (1 - abs( dist_x/mesh_space/2)) * (1 - abs( dist_y/mesh_space/2)) * (1 - abs( dist_z/mesh_space/2));
             for(int i=0; i<3; i++) force_[i] = (IB_node_.momentum().to_array()[i]-1*node_->get_m()[i+1]/node_->get_m()[0]) * kernel * dt_ / mesh_space  ;
 
@@ -117,6 +114,7 @@ for(int i =0; i<3; i++) velo[i] += IB_node_.momentum().to_array()[i];
 
 	    F = vec3(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
 	    IB_node_.add_force(F/dt_*mesh_space);
+	if(count > 4) break;
         }
     }
   }

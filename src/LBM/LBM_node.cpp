@@ -108,32 +108,8 @@ return;
 
 
 bool LBM_node::is_internal(std::shared_ptr<cell> cell_ptr, array<double, 6> aabb){
-/*vec3 com_ = cell_ptr->get_centroid();
-auto node_lst_ = cell_ptr->get_node_lst();
-bool in=0;
-double nx, ny, nz;
-for(auto& face : cell_ptr->get_face_lst() ){
-	if(!face.is_used()) continue;
-	nx = face.get_normal().dx();
-	ny = face.get_normal().dy();
-	nz = face.get_normal().dz();
-
-//if(dx_==0.0 && dy_==0.0 && dz_==0.0)std::cout << nx*(dx_ - node_lst_[face.n1_id()].pos().dx()) + ny*(dy_ - node_lst_[face.n1_id()].pos().dy()) + nz*(dz_ - node_lst_[face.n1_id()].pos().dz()) << std::endl;
-
-	//if( ((nx*(dx_ - node_lst_[face.n1_id()].pos().dx()) + ny*(dy_ - node_lst_[face.n1_id()].pos().dy()) + nz*(dz_ - node_lst_[face.n1_id()].pos().dz()) >= 0) && internal_)){in = 1;}  
-        if( (nx*(dx_ - node_lst_[face.n1_id()].pos().dx()) + ny*(dy_ - node_lst_[face.n1_id()].pos().dy()) + nz*(dz_ - node_lst_[face.n1_id()].pos().dz()) < 0)) {in = 1;}
-	//if(nx*(dx_ - com_.dx()) + ny*(dy_ - com_.dy()) + nz*(dz_ - com_.dz()) >= 0 && !internal_){in = 0; break;}
-	else{in = 0; break;}
-    }
-return in;*/
-
-//--------------------------------------------
 
 vec3 test_point(dx_, dy_, dz_);
-/*vec3 com = cell_ptr->compute_centroid();
-double distance = 4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]);
-vec3 direction = (com - test_point).normalize();
-vec3 final_point = test_point + direction*distance;*/
 
 aabb = cell_ptr->get_aabb();
 vec3 final_point = test_point + ((cell_ptr->compute_centroid() - test_point).normalize())*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]));
@@ -148,13 +124,16 @@ for(auto& face : cell_ptr->get_face_lst() ){
 	b = node_lst_[face.n2_id()].pos();
 	c = node_lst_[face.n3_id()].pos();
 
-/*	if( ((SignedVolume(a, b, c, test_point)>0) == (SignedVolume(a, b, c, final_point)>0)) ) continue;
-	else if( ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,b, c)>0) ) && 
-		 ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,c, a)>0) ) ) {count += 1;}*/
+//TEST
+if( (a - test_point).cross(a - final_point).norm() > 1.5e-6*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2])) ) continue;
+
 if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;
         else if( ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,b, c)>0) ) &&
                  ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,c, a)>0) ) ) {count += 1;}
-    }
+    
+if(count > 3) break;
+
+}
 
 if(count % 2 == 1) return 1;
 else return 0;
@@ -164,7 +143,7 @@ else return 0;
 }
 
 double LBM_node::SignedVolume(vec3 a, vec3 b, vec3 c, const vec3 d){
-	return 1.0/6.0 * (a-d).dot((b-d).cross(c-d));}
+	return /*1.0/6.0 */ (a-d).dot((b-d).cross(c-d));}
 
 
 
