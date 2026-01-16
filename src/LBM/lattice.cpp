@@ -15,7 +15,7 @@ lattice::lattice(
     c = (domain_size[0]/(dt_*mesh_size[0]));
     mesh_size_ = mesh_size;
     domain_size_ = domain_size;
-    origin[0] = -3.0e-5; origin[1] = -3.0e-5; origin[2] = -3.0e-5;
+    origin[0] = -6.0e-5; origin[1] = -6.0e-5; origin[2] = -6.0e-5;
 
     num_nodes = mesh_size[0]*mesh_size[1]*mesh_size[2];
     //node_lst_.reserve(domain_size[0]*domain_size[1]*domain_size[2]);

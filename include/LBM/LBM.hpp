@@ -9,7 +9,7 @@ class LBM{
 
 private:
 
-    int mesh_size = 31;
+    int mesh_size = 0;
     double dimensions[3] = {12.0e-5, 12.0e-5, 12.0e-5};
     double dt_;
  // ------------------------------------------- //

@@ -143,7 +143,7 @@ void LBM::write(double t){
 if(int(t/dt_) % 5 == -1){
 MeshWriter::writeflagVTK("test2/test_flag_"+to_string((t))+".vtk", flag_mesh, flag_->get_IB_nodes() );
     }
-if(int(t/dt_) % 10 == -1){
+if(int(t/dt_) % 10 == 0){
 MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_RBC_1/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
     }
 
