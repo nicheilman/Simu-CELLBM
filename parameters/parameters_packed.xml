@@ -19,7 +19,7 @@
     <input_mesh_file_path>/data/input_meshes/CTC/five_CTC.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
-    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_5_shear_8.0</output_mesh_folder_path> 
+    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_5_pressure</output_mesh_folder_path> 
 
     <!-- If equals 0 the cells will not be triangulated at the beginning of the simulation \<! -->
     <perform_initial_triangulation>1</perform_initial_triangulation> 
@@ -32,10 +32,10 @@
     <damping_coefficient>1.0e-9</damping_coefficient> 
 
     <!-- The total simulation time [T] <! -->
-    <simulation_duration>2.0e-2</simulation_duration> 
+    <simulation_duration>2.0e0</simulation_duration> 
 
     <!-- The time between each mesh file saving [T]<! -->
-    <sampling_period>1.0e-5</sampling_period> 
+    <sampling_period>1.0e-6</sampling_period> 
 
     <!-- The simulation time step [T]<! -->
     <time_step>1.0e-7</time_step> 

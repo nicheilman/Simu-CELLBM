@@ -55,6 +55,9 @@ class time_integration_scheme{
 
       void update_nodes_positions(const std::vector<cell_ptr>& cell_lst);
 
+//BCs
+void periodicBCs(const std::vector<cell_ptr>& cell_lst) noexcept;
+void translate_all(const std::vector<cell_ptr>& cell_lst, const vec3 transvect) noexcept;
 
 
 };

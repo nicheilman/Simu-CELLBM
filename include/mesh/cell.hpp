@@ -136,7 +136,8 @@ friend class LBM;
 // MY FORCE FUNCTION
  void push_force() noexcept;
 // MY PERIODIC BCs
-void periodicBCs() noexcept;
+//void periodicBCs(const std::vector<cell_ptr>& cell_lst) noexcept;
+//void translate_all(const std::vector<cell_ptr>& cell_lst, const vec3 transvect) noexcept;
 
         //Apply at the same time the surface tension forces and the membrane elasticity forces
         void apply_surface_tension_and_membrane_elasticity(const double min_edge_len) noexcept;

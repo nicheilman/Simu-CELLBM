@@ -1566,28 +1566,36 @@ if(get_cell_type_id() != 2){
 }
 
 }
-//---------------------------------------------------------------------------------------------------------
-void cell::periodicBCs() noexcept{
+/*---------------------------------------------------------------------------------------------------------
+void cell::periodicBCs(const std::vector<cell_ptr>& cell_lst) noexcept{
     assert(cell_type_ != nullptr);
 
    //First get the centroid of the cell
     const vec3 centroid = compute_centroid();
-if(get_cell_type_id() == 5){
-    if (centroid.dz() < -2.5e-5){
+if(get_cell_type_id() == 0){
+    if (centroid.dz() < -12.5e-5){
 	const vec3 transvect(0., 0., 5.0e-5);
         translate(transvect);	
-    } else if (centroid.dz() >= 2.5e-5){
-        const vec3 transvect(0., 0., -5.0e-5);
+    } else if (centroid.dz() >= 5.0e-5){
+        const vec3 transvect(0., 0., -10.0e-5);
         translate(transvect);
 		}
 
 	} 
 
+const vec3 transvect(0., 0., -10.0e-5);
+translate_all(cell_lst, transvect);
+
 }
 
 //---------------------------------------------------------------------------------------------------------
+void cell::translate_all(const std::vector<cell_ptr>& cell_lst, const vec3 transvect) noexcept{
+    std::for_each(cell_lst.begin(), cell_lst.end(), [transvect](cell_ptr c){c->translate(transvect);});
+}
+ 
 
-
+//---------------------------------------------------------------------------------------------------------
+*/
 
 void cell::apply_bending_forces() noexcept{
     /*For a comprehensive inderstanding of the bending model used here see:
@@ -1781,7 +1789,7 @@ void cell::apply_internal_forces(const double time_step, const double min_edge_l
     #endif
 
 // MY B.C
-periodicBCs();
+//periodicBCs();
 
 }
 //---------------------------------------------------------------------------------------------------------

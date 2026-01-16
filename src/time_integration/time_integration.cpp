@@ -21,6 +21,8 @@ void time_integration_scheme::update_nodes_positions(const std::vector<cell_ptr>
     //If we use the contact model that uses springs between faces and vertices
     #if CONTACT_MODEL_INDEX == 0
 
+bool BC_switch = 0;
+
         #pragma omp parallel for schedule(static)
         for(size_t c1_id = 0; c1_id < cell_lst.size(); c1_id++){
             cell_ptr c1 = cell_lst[c1_id];
@@ -64,7 +66,11 @@ void time_integration_scheme::update_nodes_positions(const std::vector<cell_ptr>
                     n1.force_.reset();
                 }
             }
-        }
+//TEST 011626
+if(c1->compute_centroid().dz() >= 4.5e-5) BC_switch = 1;
+	}
+if(BC_switch == 1) periodicBCs(cell_lst);
+BC_switch = 0;
     //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -322,6 +328,17 @@ void time_integration_scheme::update_nodes_positions(const std::vector<cell_ptr>
 }
 
 
+//---------------------------------------------------------------------------------------------------------
+void time_integration_scheme::periodicBCs(const std::vector<cell_ptr>& cell_lst) noexcept{
+const vec3 transvect(0., 0., -10.0e-5);
+translate_all(cell_lst, transvect);
+
+}
+
+//---------------------------------------------------------------------------------------------------------
+void time_integration_scheme::translate_all(const std::vector<cell_ptr>& cell_lst, const vec3 transvect) noexcept{
+    std::for_each(cell_lst.begin(), cell_lst.end(), [transvect](cell_ptr c){c->translate(transvect);});
+}
 
 
 
