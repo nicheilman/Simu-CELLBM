@@ -24,7 +24,7 @@ cout << fixed << setprecision(10);
 cout << "CellBM is running!" << endl;
 
 array<double, 6> aabb;
-//for(auto& cell_ : cell_lst) aabb = cell_->get_aabb();
+double velo_interp[3];
 
 vec3 F;
 std::vector<double> zero = {0., 0., 0.};
@@ -84,6 +84,8 @@ if(cell_->get_cell_type_id() != 2){
 for(int i =0; i<3; i++) velo[i] = 0.;
 
 	if(node_->get_internal()){node_->set_velocity(zero); continue;}
+}
+
 
 // Only fluid nodes near the IB need to be looked at //
 // Will be best to use Bounding Box //
@@ -93,37 +95,43 @@ for(auto& cell_ : cell_lst){
     
 if(cell_->get_cell_type_id() == 2) continue;
 
-    if( (node_->get_pos()[0] >= aabb[0]-2*mesh_space)&&(node_->get_pos()[0] <= aabb[3]+2*mesh_space) && 
-    (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
-    (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
+//    if( (node_->get_pos()[0] >= aabb[0]-2*mesh_space)&&(node_->get_pos()[0] <= aabb[3]+2*mesh_space) && 
+//    (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
+//    (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
 
     for(node& IB_node_ : cell_->node_lst_ ) {
+
+for(auto& node_ : L_->IB_neighbors(IB_node_.pos())){
+
+if(node_->get_internal()) continue;
 
         dist_x = (node_->get_pos()[0] - IB_node_.pos().dx()) ;
         dist_y = (node_->get_pos()[1] - IB_node_.pos().dy()) ;
         dist_z = (node_->get_pos()[2] - IB_node_.pos().dz()) ;
 
         dist = dist_x*dist_x + dist_y*dist_y + dist_z*dist_z;
-        //dist = sqrt(dist);
-        if(dist*dist <= 4*mesh_space*mesh_space ){
-	    count++;
+
+        if(dist*dist <= 4*mesh_space*mesh_space) {
             kernel = (1 - abs( dist_x/mesh_space/2)) * (1 - abs( dist_y/mesh_space/2)) * (1 - abs( dist_z/mesh_space/2));
-            for(int i=0; i<3; i++) force_[i] = (IB_node_.momentum().to_array()[i]-1*node_->get_m()[i+1]/node_->get_m()[0]) * kernel * dt_ / mesh_space  ;
+        for(int i=0; i<3; i++) velo_interp[i] += node_->get_m()[i+1] / node_->get_m()[0] * kernel ;    
+    }
+}
+	for(int i=0; i<3; i++) force_[i] = ((IB_node_.momentum()/cell_->get_node_mass() ).to_array()[i] - velo_interp[i] )*mesh_space*mesh_space*mesh_space*dt_;
 
 for(int i =0; i<3; i++) velo[i] += IB_node_.momentum().to_array()[i]; 
 
 	    F = vec3(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
-	    IB_node_.add_force(F/dt_*mesh_space);
-	if(count > 4) break;
-        }
+	    IB_node_.add_force(F);
+//        }
     }
-  }
+  //}
 }
 
-node_->update_velo(velo);
+//node_->update_velo(velo);
 
 //----------------------------------------------------------------------
-
+force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
+for(auto& node_ : L_->get_nodes() ){
     node_->collision(dt_, force_, node_->get_internal());
 
     node_->ftom(L_, 1);

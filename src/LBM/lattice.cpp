@@ -15,7 +15,7 @@ lattice::lattice(
     c = (domain_size[0]/(dt_*mesh_size[0]));
     mesh_size_ = mesh_size;
     domain_size_ = domain_size;
-    origin[0] = -6.0e-5; origin[1] = -6.0e-5; origin[2] = -6.0e-5;
+    origin[0] = -2.0e-5; origin[1] = -2.0e-5; origin[2] = -2.0e-5;
 
     num_nodes = mesh_size[0]*mesh_size[1]*mesh_size[2];
     //node_lst_.reserve(domain_size[0]*domain_size[1]*domain_size[2]);
@@ -74,10 +74,10 @@ if(node_->get_wallflag() == 1){
 
 
     if(almost_equal(node_->get_pos()[0], origin[0])){
-        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 0.0e-11*c_i[i][2] * c );} 
+        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 0.0e-13*c_i[i][2] * c );} 
 	 }
     if(almost_equal(node_->get_pos()[0], domain_size_[0]+origin[0])){
-        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -0.0e-11*c_i[i][2] * c );} 
+        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -0.0e-13*c_i[i][2] * c );} 
 	 }
 
 
@@ -108,5 +108,22 @@ if(node_->get_pos()[2] == domain_size_[2]+origin[2]){
 }
 return;
 
+}
+
+std::vector<std::shared_ptr<LBM_node>> lattice::IB_neighbors(vec3 pos){
+    vec3 neighbor_base( pos.dx()-origin[0], pos.dy() - origin[1], pos.dz() - origin[2]);
+    neighbor_base = neighbor_base * mesh_size_[0]/domain_size_[0];
+
+std::vector<std::shared_ptr<LBM_node>> neighbor_nodes;
+    for(int i=0; i<2; i++){
+        for(int j=0; j<2; j++){
+	    for(int k=0; k<2; k++){
+		neighbor_nodes.push_back(node_lst_[((int)neighbor_base.dx()+i)*mesh_size_[1]*mesh_size_[2]+
+						   ((int)neighbor_base.dy()+j)*mesh_size_[2]+
+			 			    (int)neighbor_base.dz()+k]);
+	    }
+	}
+    }
+return neighbor_nodes;
 }
 

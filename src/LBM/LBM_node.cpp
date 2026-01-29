@@ -85,7 +85,7 @@ double f_extx = fext[0];
 double f_exty = fext[1];
 double f_extz = fext[2];
 
-if(dz_ == -6.0e-5) meq[3] = 1.0e-15;
+if(dz_ == -2.0e-5) meq[3] = 1.0e-13;
 //if(dz_ == -3.0e-5) meq[2] =  1.0e-11;
 
 if(!internal){
