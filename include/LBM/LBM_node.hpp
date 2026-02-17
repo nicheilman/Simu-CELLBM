@@ -20,6 +20,7 @@ class LBM_node: public std::enable_shared_from_this<LBM_node>{
 
 // TEST 
 std::vector<double> velo_ = {0., 0., 0.};
+vec3 force_;
 bool need_update_ = 0;
 
     static constexpr double wk[19] = {3., 18., 18., 18., 18., 18., 18., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36., 36.};
@@ -68,6 +69,10 @@ bool is_internal(std::shared_ptr<cell> cell_ptr, std::array<double, 6> aabb);
 double SignedVolume(vec3 a, vec3 b, vec3 c, const vec3 d);
 
 void set_meq(){ m_ = meq; return;}
+
+void reset_force(){force_.reset(); return;}
+void add_force(const double f[3]){force_.translate(f[0], f[1], f[2]); return;}
+vec3 get_force(){return force_;}
 
 };
 

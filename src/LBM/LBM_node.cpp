@@ -85,7 +85,7 @@ double f_extx = fext[0];
 double f_exty = fext[1];
 double f_extz = fext[2];
 
-if(dz_ == -2.0e-5) meq[3] = 1.0e-13;
+//if(dz_ == -4.0e-5) meq[3] = 1.0e-15;
 //if(dz_ == -3.0e-5) meq[2] =  1.0e-11;
 
 if(!internal){
@@ -108,7 +108,7 @@ return;
 
 
 bool LBM_node::is_internal(std::shared_ptr<cell> cell_ptr, array<double, 6> aabb){
-
+/*
 vec3 test_point(dx_, dy_, dz_);
 
 aabb = cell_ptr->get_aabb();
@@ -125,7 +125,7 @@ for(auto& face : cell_ptr->get_face_lst() ){
 	c = node_lst_[face.n3_id()].pos();
 
 //TEST
-if( (a - test_point).cross(a - final_point).norm() > 1.5e-6*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2])) ) continue;
+//if( (a - test_point).cross(a - final_point).norm() > 1.5e-6*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2])) ) continue;
 
 if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;
         else if( ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,b, c)>0) ) &&
@@ -134,6 +134,26 @@ if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point
 if(count > 3) break;
 
 }
+*/
+
+vec3 test_point(dx_, dy_, dz_);
+vec3 final_point(dx_, dy_, dz_ + abs(aabb[5])*1.0e1);
+
+auto node_lst_ = cell_ptr->get_node_lst();
+int count = 0;
+vec3 a, b, c;
+
+for(auto& face : cell_ptr->get_face_lst() ){
+        if(!face.is_used()) continue;
+        a = node_lst_[face.n1_id()].pos();
+        b = node_lst_[face.n2_id()].pos();
+        c = node_lst_[face.n3_id()].pos();
+	//if(a.dz() < dz_) continue;
+
+if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;
+        else if( ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,b, c)>0) ) &&
+                 ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,c, a)>0) ) ) {count += 1;}
+    }
 
 if(count % 2 == 1) return 1;
 else return 0;

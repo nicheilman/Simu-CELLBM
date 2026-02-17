@@ -28,7 +28,6 @@ double velo_interp[3];
 
 vec3 F;
 std::vector<double> zero = {0., 0., 0.};
-int count;
 
 for(auto& node_ : L_->get_nodes() ){ //  
 
@@ -62,7 +61,7 @@ if(cell_->get_cell_type_id() != 2){
     };
 
 }
-else if( int(t/dt_) % 10 == 0){
+else if( int(t/dt_) % 10 == -1){
     for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
 
@@ -81,8 +80,6 @@ if(cell_->get_cell_type_id() != 2){
 
 //------------------------------
 
-for(int i =0; i<3; i++) velo[i] = 0.;
-
 	if(node_->get_internal()){node_->set_velocity(zero); continue;}
 }
 
@@ -91,19 +88,18 @@ for(int i =0; i<3; i++) velo[i] = 0.;
 // Will be best to use Bounding Box //
 for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
-    count = 0;
     
 if(cell_->get_cell_type_id() == 2) continue;
 
-//    if( (node_->get_pos()[0] >= aabb[0]-2*mesh_space)&&(node_->get_pos()[0] <= aabb[3]+2*mesh_space) && 
-//    (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
-//    (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
-
     for(node& IB_node_ : cell_->node_lst_ ) {
 
-for(auto& node_ : L_->IB_neighbors(IB_node_.pos())){
+force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
 
-if(node_->get_internal()) continue;
+    for(auto& node_ : L_->IB_neighbors(IB_node_.pos())){
+
+	if(node_->is_internal(cell_,aabb)){
+                node_->set_internal(1); continue;}
+         else node_->set_internal(0);
 
         dist_x = (node_->get_pos()[0] - IB_node_.pos().dx()) ;
         dist_y = (node_->get_pos()[1] - IB_node_.pos().dy()) ;
@@ -114,20 +110,23 @@ if(node_->get_internal()) continue;
         if(dist*dist <= 4*mesh_space*mesh_space) {
             kernel = (1 - abs( dist_x/mesh_space/2)) * (1 - abs( dist_y/mesh_space/2)) * (1 - abs( dist_z/mesh_space/2));
         for(int i=0; i<3; i++) velo_interp[i] += node_->get_m()[i+1] / node_->get_m()[0] * kernel ;    
+	}
     }
-}
-	for(int i=0; i<3; i++) force_[i] = ((IB_node_.momentum()/cell_->get_node_mass() ).to_array()[i] - velo_interp[i] )*mesh_space*mesh_space*mesh_space*dt_;
 
-for(int i =0; i<3; i++) velo[i] += IB_node_.momentum().to_array()[i]; 
+//if(L_->IB_neighbors(IB_node_.pos()).empty()) continue;
 
-	    F = vec3(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
+    for(int i=0; i<3; i++) force_[i] = ((IB_node_.momentum()/cell_->get_node_mass() ).to_array()[i] - velo_interp[i] ) * mesh_space * dt_;
+
+    for(int i =0; i<3; i++) velo_interp[i] = 0.0; 
+
+	    F.reset(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
 	    IB_node_.add_force(F);
-//        }
+F.reset();
+//F.print();
+//IB_node_.momentum().print();
     }
-  //}
 }
 
-//node_->update_velo(velo);
 
 //----------------------------------------------------------------------
 force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
