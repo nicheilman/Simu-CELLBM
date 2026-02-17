@@ -1540,8 +1540,8 @@ if(get_cell_type_id() != 2){
     //std::default_random_engine generator;
     //std::normal_distribution<double> dist(mean, stddev);
 
-	    if(get_cell_type_id() == 0){
-	    const double push_strength = 1.0e4;
+	    if(get_id() == 0){
+	    const double push_strength = 1.0e1;
 
             vec3 push_force(dist(generator) * face_area / 3., (dist(generator)) * face_area / 3., -1*(push_strength + dist(generator)) * face_area / 3.); //, 0.0, 0.0);
 	    face_push = push_force;
