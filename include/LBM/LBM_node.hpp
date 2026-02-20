@@ -74,6 +74,12 @@ void reset_force(){force_.reset(); return;}
 void add_force(const double f[3]){force_.translate(f[0], f[1], f[2]); return;}
 vec3 get_force(){return force_;}
 
+bool sign(double a, double b, double c){return signbit(a) ? (b<c) : (b>c);};
+bool octant_check(vec3 arrow, vec3 test, vec3 point){
+        return sign(arrow.dx(), test.dx(), point.dx()) 
+            && sign(arrow.dy(), test.dy(), point.dy())
+            && sign(arrow.dz(), test.dz(), point.dz()) ;};
+
 };
 
 
