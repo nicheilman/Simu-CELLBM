@@ -105,6 +105,10 @@ solver::solver(
 //The method that contains the main loop of the program
 void solver::run() noexcept(false){
 
+double start; 
+double end; 
+start = omp_get_wtime();
+
     //The main loop of the program
     while(time_integrator_ptr_->get_simulation_time() < sim_parameters_.simulation_duration_ && cell_lst_.size() > 0){
         run_iteration();
@@ -114,6 +118,9 @@ void solver::run() noexcept(false){
 
     //Rebase all the cells before stopping the main loop
     std::for_each(cell_lst_.begin(), cell_lst_.end(), [](cell_ptr c){c->rebase();});
+
+end = omp_get_wtime(); 
+printf("Work took %f seconds\n", end - start);
 }
 //--------------------------------------------------------------------------------------------------------------------------
 

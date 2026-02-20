@@ -1471,9 +1471,9 @@ void cell::apply_surface_tension_and_membrane_elasticity(const double min_edge_l
         const vec3 e23 = n2.pos_ - n3.pos_;
         const vec3 e31 = n3.pos_ - n1.pos_;
 
-        const double FENE_force_12 = (-1 * cell_type_->FENE_stiffness_)* e12.norm() / (1 - 0.050 * std::pow((e12.norm() / min_edge_len), 2) );
-        const double FENE_force_23 = (-1 * cell_type_->FENE_stiffness_)* e23.norm() / (1 - 0.050 * std::pow((e23.norm() / min_edge_len), 2) );
-        const double FENE_force_31 = (-1 * cell_type_->FENE_stiffness_)* e31.norm() / (1 - 0.050 * std::pow((e31.norm() / min_edge_len), 2) );
+        const double FENE_force_12 = (-1 * cell_type_->FENE_stiffness_)* e12.norm() / (1 - 0.0625 * std::pow((e12.norm() / min_edge_len), 2) );
+        const double FENE_force_23 = (-1 * cell_type_->FENE_stiffness_)* e23.norm() / (1 - 0.0625 * std::pow((e23.norm() / min_edge_len), 2) );
+        const double FENE_force_31 = (-1 * cell_type_->FENE_stiffness_)* e31.norm() / (1 - 0.0625 * std::pow((e31.norm() / min_edge_len), 2) );
 
             
             //Compute the membrane elasticity force factor

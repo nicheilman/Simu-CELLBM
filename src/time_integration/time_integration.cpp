@@ -40,17 +40,17 @@ vec3 mom_temp, dr;
                     #if DYNAMIC_MODEL_INDEX == 0
                         
 			//First update the momentum of the node
-//                        n1.momentum_.translate((n1.force_ - (n1.momentum_ * (damping_coeff_ / c1_node_mass))) * dt_);
+                        n1.momentum_.translate((n1.force_ - (n1.momentum_ * (damping_coeff_ / c1_node_mass))) * dt_);
 
-mom_temp = (n1.momentum_ + n1.force_ * dt_) ;
+//mom_temp = (n1.momentum_ + n1.force_ * dt_) ;
 
-dr = (mom_temp + n1.momentum_) / c1_node_mass * 0.5 * dt_;
+//dr = (mom_temp + n1.momentum_) / c1_node_mass * 0.5 * dt_;
 
                         //Compute the node velocity on the fly and update the node position
-//                        n1.pos_.translate(n1.momentum_ * (dt_ / c1_node_mass)); 
+                        n1.pos_.translate(n1.momentum_ * (dt_ / c1_node_mass)); 
 
-n1.pos_.translate(dr);
-n1.momentum_.reset(mom_temp);
+//n1.pos_.translate(dr);
+//n1.momentum_.reset(mom_temp);
 //n1.momentum_.translate(vel_temp);
 
                         //Update the cell kinetic energy

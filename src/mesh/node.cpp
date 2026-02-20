@@ -92,3 +92,4 @@ bool node::operator!=(const node& n) const noexcept{return node_id_ != n.get_loc
 //The substraction of 2 nodes returns a vector
 vec3 node::operator-(const node& n) const noexcept{return pos_ - n.pos();}
 
+

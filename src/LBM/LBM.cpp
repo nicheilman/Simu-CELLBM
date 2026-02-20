@@ -20,6 +20,11 @@ LBM::LBM(double dt, std::vector<cell_ptr> cell_lst, double& min_edge_len) : dt_(
 
 void LBM::run(double t, const std::vector<cell_ptr>& cell_lst){
 
+//TIMER
+double start, IB_start, NB_start; 
+double end, IB_end, NB_end; 
+start = omp_get_wtime(); 
+
 cout << fixed << setprecision(10);
 cout << "CellBM is running!" << endl;
 
@@ -82,7 +87,8 @@ if(cell_->get_cell_type_id() != 2){
 
 	if(node_->get_internal()){node_->set_velocity(zero); continue;}
 }
-
+//TIMER
+IB_start = omp_get_wtime();
 
 // Only fluid nodes near the IB need to be looked at //
 // Will be best to use Bounding Box //
@@ -95,11 +101,16 @@ if(cell_->get_cell_type_id() == 2) continue;
 
 force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
 
-    for(auto& node_ : L_->IB_neighbors(IB_node_.pos())){
-
+    for(auto& node_ : L_->IB_neighbors(IB_node_)){
+	if(!IB_node_.neighbor_base_check()){
+//TIMER
+NB_start = omp_get_wtime();
 	if(node_->is_internal(cell_,aabb)){
                 node_->set_internal(1); continue;}
          else node_->set_internal(0);
+NB_end = omp_get_wtime();
+NB_accumulate += NB_end - NB_start;
+		}
 
         dist_x = (node_->get_pos()[0] - IB_node_.pos().dx()) ;
         dist_y = (node_->get_pos()[1] - IB_node_.pos().dy()) ;
@@ -126,7 +137,11 @@ F.reset();
 //IB_node_.momentum().print();
     }
 }
-
+//TIMER
+IB_end = omp_get_wtime();
+IB_accumulate += IB_end - IB_start;
+printf("Internal took %f seconds\n", NB_accumulate);
+printf("IB took %f seconds\n", IB_accumulate);
 
 //----------------------------------------------------------------------
 force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
@@ -141,6 +156,10 @@ for(auto& node_ : L_->get_nodes() ){
 for(auto& node_ : L_->get_nodes()){
     node_->update_f();
     }
+//TIMER
+end = omp_get_wtime(); 
+accumulate += end - start;
+printf("IB-LBM took %f seconds\n", accumulate);
 
 };
 
@@ -151,7 +170,7 @@ if(int(t/dt_) % 5 == -1){
 MeshWriter::writeflagVTK("test2/test_flag_"+to_string((t))+".vtk", flag_mesh, flag_->get_IB_nodes() );
     }
 if(int(t/dt_) % 10 == 0){
-MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_RBC_1/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
+MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_move_norm_big/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
     }
 
 

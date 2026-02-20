@@ -74,10 +74,10 @@ if(node_->get_wallflag() == 1){
 
 
     if(almost_equal(node_->get_pos()[0], origin[0])){
-        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 1.0e-15*c_i[i][2] * c );} 
+        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 0.0e-15*c_i[i][2] * c );} 
 	 }
     if(almost_equal(node_->get_pos()[0], domain_size_[0]+origin[0])){
-        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -1.0e-15*c_i[i][2] * c );} 
+        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -0.0e-15*c_i[i][2] * c );} 
 	 }
 
 
@@ -110,20 +110,25 @@ return;
 
 }
 
-std::vector<std::shared_ptr<LBM_node>> lattice::IB_neighbors(vec3 pos){
+std::vector<std::shared_ptr<LBM_node>> lattice::IB_neighbors(node IB_node){
+//TIMER
+double Neigh_start, Neigh_end;
+Neigh_start = omp_get_wtime();
+
 std::vector<std::shared_ptr<LBM_node>> neighbor_nodes;
-if( (pos.dx()<origin[0]) || (pos.dy()<origin[1]) || (pos.dz()<origin[2]) ||
-    (pos.dx()>(origin[0]+domain_size_[0])) || (pos.dy()>(origin[1]+domain_size_[1])) || (pos.dz()>(origin[2]+domain_size_[2])) ){ 
+if( (IB_node.pos().dx()<origin[0]) || (IB_node.pos().dy()<origin[1]) || (IB_node.pos().dz()<origin[2]) ||
+    (IB_node.pos().dx()>(origin[0]+domain_size_[0])) || (IB_node.pos().dy()>(origin[1]+domain_size_[1])) || (IB_node.pos().dz()>(origin[2]+domain_size_[2])) ){ 
     return neighbor_nodes;}
     
-    vec3 neighbor_base( pos.dx()-origin[0], pos.dy() - origin[1], pos.dz() - origin[2]);
+    vec3 neighbor_base( IB_node.pos().dx()-origin[0], IB_node.pos().dy() - origin[1], IB_node.pos().dz() - origin[2]);
     neighbor_base = neighbor_base * mesh_size_[0]/domain_size_[0];
+    IB_node.update_neighbor_base(neighbor_base);
 
 int node_idx;
 //std::vector<std::shared_ptr<LBM_node>> neighbor_nodes;
-    for(int i=-1; i<2; i++){
-        for(int j=-1; j<2; j++){
-	    for(int k=-1; k<2; k++){
+    for(int i=0; i<2; i++){
+        for(int j=0; j<2; j++){
+	    for(int k=0; k<2; k++){
 		node_idx = ( ( (int)neighbor_base.dx()+i)*mesh_size_[1]*mesh_size_[2]+
                                                    ((int)neighbor_base.dy()+j)*mesh_size_[2]+
                                                     (int)neighbor_base.dz()+k) % num_nodes;
@@ -131,6 +136,10 @@ int node_idx;
 	    }
 	}
     }
+//TIMER
+Neigh_end = omp_get_wtime();
+Neigh_accumulate += Neigh_end - Neigh_start;
+printf("Neighbors took %f seconds\n", Neigh_accumulate);
 
 return neighbor_nodes;
 }
