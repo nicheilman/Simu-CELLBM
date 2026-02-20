@@ -78,7 +78,7 @@
 
         <!-- The elastic modulus of the cell membranes [M / (T^2 L^2)] <! -->
         <!-- Default = 2e-17<! -->
-        <area_elasticity_modulus>1e-14</area_elasticity_modulus> 
+        <area_elasticity_modulus>1e-17</area_elasticity_modulus> 
 
         <!-- Used to make sure that the angles of the triangular faces are all approximately 60 deg [M L^2 / T^2] <! -->
         <angle_regularization_factor>0</angle_regularization_factor> 

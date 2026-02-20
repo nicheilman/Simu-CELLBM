@@ -19,7 +19,7 @@
     <input_mesh_file_path>/data/input_meshes/lil_ball.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
-    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_RBC_1</output_mesh_folder_path> 
+    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_RBC_2</output_mesh_folder_path> 
 
     <!-- If equals 0 the cells will not be triangulated at the beginning of the simulation \<! -->
     <perform_initial_triangulation>1</perform_initial_triangulation> 

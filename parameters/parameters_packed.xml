@@ -16,10 +16,10 @@
 <numerical_parameters>
     <!-- The mesh file containing the initial configuration <! -->
 
-    <input_mesh_file_path>/data/input_meshes/CTC/five_CTC.vtk</input_mesh_file_path> 
+    <input_mesh_file_path>/data/input_meshes/lil_ball.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
-    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_5_pressure</output_mesh_folder_path> 
+    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_2</output_mesh_folder_path> 
 
     <!-- If equals 0 the cells will not be triangulated at the beginning of the simulation \<! -->
     <perform_initial_triangulation>1</perform_initial_triangulation> 
@@ -29,25 +29,25 @@
     <enable_edge_swap_operation>0</enable_edge_swap_operation> 
 
     <!-- The damping coefficients [M / T] <! -->
-    <damping_coefficient>1.0e-9</damping_coefficient> 
+    <damping_coefficient>1.0e-8</damping_coefficient> 
 
     <!-- The total simulation time [T] <! -->
-    <simulation_duration>2.0e0</simulation_duration> 
+    <simulation_duration>1.0e-1</simulation_duration> 
 
     <!-- The time between each mesh file saving [T]<! -->
-    <sampling_period>1.0e-6</sampling_period> 
+    <sampling_period>1.0e-7</sampling_period> 
 
     <!-- The simulation time step [T]<! -->
     <time_step>1.0e-7</time_step> 
 
     <!-- The minimum edge length allowed [L] <! -->
-    <min_edge_length>1.0e-6</min_edge_length> 
+    <min_edge_length>2.0e-6</min_edge_length> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
-    <contact_cutoff_adhesion>1.0e-5</contact_cutoff_adhesion> 
+    <contact_cutoff_adhesion>1.0e-6</contact_cutoff_adhesion> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
-    <contact_cutoff_repulsion>1.0e-6</contact_cutoff_repulsion> 
+    <contact_cutoff_repulsion>5.0e-7</contact_cutoff_repulsion> 
 </numerical_parameters>
 
 
@@ -64,10 +64,10 @@
         <cell_mass_density>1.0e3</cell_mass_density> 
 
         <!-- The bulk modulus of the cells [M /(L T^2)] <! -->
-        <cell_bulk_modulus>2.5e5</cell_bulk_modulus> 
+        <cell_bulk_modulus>2.5e3</cell_bulk_modulus> 
 
         <!-- The maximal inner pressure of a cell. Set to INF to have no pressure limit [M / (T^2 L)] <! -->
-        <max_inner_pressure>INF</max_inner_pressure> 
+        <max_inner_pressure>1.0e3</max_inner_pressure> 
 
         <!-- Growth rate = cellDivisionTargetVolume / cellCycleDuration [L^3 / T] Default: 3e-12 <! -->
         <avg_growth_rate>0.0e-12</avg_growth_rate> 
@@ -84,13 +84,13 @@
         <angle_regularization_factor>0</angle_regularization_factor> 
 
         <!-- The volume that the cell has to reach before division [L^3] (Drawn from a normal distribution)<! -->
-        <avg_division_volume>1.9e-14</avg_division_volume> 
+        <avg_division_volume>1.9e-4</avg_division_volume> 
         <std_division_volume>0.0e-15</std_division_volume> 
 
         <!-- If the absolute value of the mean curvature at a point is above this value, then the point cannot be coupled to another cell surface [1 / L] <! -->
         <surface_coupling_max_curvature>1.0e6</surface_coupling_max_curvature>
 
-        <FENE_stiffness>1.0e-4</FENE_stiffness>
+        <FENE_stiffness>5.0e-10</FENE_stiffness>
 
         <!-- Growth rate = cellDivisionTargetVolume / cellCycleDuration [L^3 / T]<! -->
         <!-- If the cell reach this volume we delete it[L^3]<! -->
@@ -110,10 +110,10 @@
                 <repulsion_strength>1e9</repulsion_strength> 
 
                 <!-- The surface tension of the cell membranes [M / T^2] <! -->
-                <surface_tension>1.0e-3</surface_tension> 
+                <surface_tension>1.0e-5</surface_tension> 
 
                 <!-- The bending elasticity of the cell surface [M L^2 / T^2] <! -->
-                <bending_modulus>1.0e-16</bending_modulus> 
+                <bending_modulus>1.0e-13</bending_modulus> 
             </face_type>
         </face_types>  
     </cell_type>
