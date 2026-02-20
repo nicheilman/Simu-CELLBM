@@ -23,7 +23,7 @@ struct OurContactModel {
 private:
   static inline std::map<std::pair<const short int, const short int>, std::pair<double, double>> contact_strengths_ = 
   {
-    {std::make_pair(0, 0), std::make_pair(1.0e7, 1.0e9)},
+    {std::make_pair(0, 0), std::make_pair(1.0e11, 1.0e7)},
     {std::make_pair(0, 2), std::make_pair(0.0e8, 0.0e8)},
     {std::make_pair(2, 2), std::make_pair(0.0, 0.0)},
     {std::make_pair(2, 0), std::make_pair(0.0e8, -5.0e8)},

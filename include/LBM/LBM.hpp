@@ -9,9 +9,13 @@ class LBM{
 
 private:
 
-    int mesh_size = 21;
+    int mesh_size = 11;
     double dimensions[3] = {8.0e-5, 8.0e-5, 8.0e-5};
     double dt_;
+//TIMER
+double accumulate = 0.;
+double IB_accumulate = 0.;
+double NB_accumulate = 0.;
  // ------------------------------------------- //
 
     double IB_CoM[3] = {1.0, 0.5*dimensions[1], 0.1*dimensions[2]};

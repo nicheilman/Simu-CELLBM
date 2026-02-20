@@ -227,6 +227,13 @@ friend class LBM;
             void set_momentum(const vec3& momentum) noexcept {momentum_ = momentum;}
         #endif 
 
+//TEST!
+vec3 neighbor_base_; 
+vec3 neighbor_base_memory_; 
+void update_neighbor_base(vec3 neighbor_base){
+    neighbor_base_memory_ = neighbor_base_;
+    neighbor_base_ = neighbor_base; return;}
+bool neighbor_base_check(){return (neighbor_base_ == neighbor_base_memory_);};
 
 };
 

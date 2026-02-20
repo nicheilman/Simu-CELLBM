@@ -14,6 +14,8 @@ class lattice{
     double dt_;
     double c, origin[3];
     int num_nodes;
+//TIMER
+double Neigh_accumulate = 0.;
 
     std::vector<std::shared_ptr<LBM_node>> node_lst_ = {};
     static constexpr double evector[19][19] = { {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // Mass Density, \rho
@@ -115,7 +117,7 @@ static constexpr int c_i[19][3] = { { 0, 0, 0},  // 0
 
     void stream();
 
-std::vector<std::shared_ptr<LBM_node>> IB_neighbors(vec3 pos);
+std::vector<std::shared_ptr<LBM_node>> IB_neighbors(node IB_node);
 
 };
 
