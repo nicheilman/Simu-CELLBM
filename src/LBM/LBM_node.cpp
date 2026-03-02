@@ -14,6 +14,7 @@ dy_ = dy;
 dz_ = dz;
 wallflag_ = wall_flag;
 internal_ = internal;
+int_mem_ = internal_;
 idx_ = idx;
 
 }
@@ -58,15 +59,16 @@ void LBM_node::calc_eq(){
 
             m2 = m_[1] * m_[1] + m_[2] * m_[2] + m_[3] * m_[3];
             meq[0] = m_[0];
+	    double meq_inv = 1/meq[0];
             meq[1] = m_[1];
             meq[2] = m_[2];
             meq[3] = m_[3];
-            meq[4] = m2 / meq[0];
-            meq[5] = (3 * m_[1] * m_[1] - m2) / meq[0];
-            meq[6] = (m_[2] * m_[2] - m_[3] * m_[3]) / meq[0];
-            meq[7] = m_[1] * m_[2] / meq[0];
-            meq[8] = m_[3] * m_[2] / meq[0];
-            meq[9] = m_[3] * m_[1] / meq[0];
+            meq[4] = m2 * meq_inv;
+            meq[5] = (3 * m_[1] * m_[1] - m2) * meq_inv;
+            meq[6] = (m_[2] * m_[2] - m_[3] * m_[3]) * meq_inv;
+            meq[7] = m_[1] * m_[2] * meq_inv;
+            meq[8] = m_[3] * m_[2] * meq_inv;
+            meq[9] = m_[3] * m_[1] * meq_inv;
             for (int q = 10; q < velo_dim; ++q)
                 meq[q] = 0.0;
 
@@ -75,11 +77,12 @@ return;
 //--------------------------------------------------------------------//
 
 void LBM_node::collision(double dt, double fext[3], bool internal){
+
+if(internal){for(int i=0; i<3; i++) m_[i+1] = 0.0; return;};
+
 //#pragma omp parallel for
 for(int i=4; i<velo_dim; i++)
 	m_[i] += -1.0 * (m_[i] - meq[i]) * lambda[i];
-
-//if(internal) for(int i=0; i<3; i++) m_[i+1] = 0.0; 
 
 double f_extx = fext[0];
 double f_exty = fext[1];
@@ -88,26 +91,26 @@ double f_extz = fext[2];
 //if(dz_ == -4.0e-5) meq[3] = 1.0e-15;
 //if(dz_ == -3.0e-5) meq[2] =  1.0e-11;
 
-if(!internal){
+double meq_inv = 1/meq[0];
+
       m_[1] += f_extx;
       m_[2] += f_exty;
       m_[3] += f_extz;
-      m_[4] += 2.0*(m_[1]*f_extx+m_[2]*f_exty+m_[3]*f_extz)/meq[0];
-      m_[5] += (4.0*m_[1]*f_extx-2.0*(m_[2]*f_exty+m_[3]*f_extz))/meq[0];
-      m_[6] += 2.0*(m_[2]*f_exty-m_[3]*f_extz)/meq[0];
-      m_[7] += (m_[1]*f_exty+m_[2]*f_extx)/meq[0];
-      m_[8] += (m_[3]*f_exty+m_[2]*f_extz)/meq[0];
-      m_[9] += (m_[3]*f_extx+m_[1]*f_extz)/meq[0];
-}
-
-if(internal) for(int i=0; i<3; i++) m_[i+1] = 0.0;
+      m_[4] += 2.0*(m_[1]*f_extx+m_[2]*f_exty+m_[3]*f_extz)*meq_inv;
+      m_[5] += (4.0*m_[1]*f_extx-2.0*(m_[2]*f_exty+m_[3]*f_extz))*meq_inv;
+      m_[6] += 2.0*(m_[2]*f_exty-m_[3]*f_extz)*meq_inv;
+      m_[7] += (m_[1]*f_exty+m_[2]*f_extx)*meq_inv;
+      m_[8] += (m_[3]*f_exty+m_[2]*f_extz)*meq_inv;
+      m_[9] += (m_[3]*f_extx+m_[1]*f_extz)*meq_inv;
 
 return;
 
 }
 
 
-bool LBM_node::is_internal(std::shared_ptr<cell> cell_ptr, array<double, 6> aabb){
+bool LBM_node::is_internal(std::shared_ptr<cell> cell_ptr, array<double, 6> aabb, double t){
+
+if(int_mem_ == 1) return 1; 
 
 vec3 test_point(dx_, dy_, dz_);
 
@@ -127,8 +130,9 @@ for(auto& face : cell_ptr->get_face_lst() ){
 	c = node_lst_[face.n3_id()].pos();
 
 //TEST
+if(t > 0.){
 if(!octant_check(arrow, a, test_point) && !octant_check(arrow, b, test_point) && !octant_check(arrow, c, test_point)) continue;
-
+     }
 //face_counter += 1;
 
 	     if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;

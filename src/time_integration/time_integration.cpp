@@ -51,7 +51,6 @@ vec3 mom_temp, dr;
 
 //n1.pos_.translate(dr);
 //n1.momentum_.reset(mom_temp);
-//n1.momentum_.translate(vel_temp);
 
                         //Update the cell kinetic energy
                         c1->kinetic_energy_ += 0.5 * n1.momentum_.squared_norm() / c1_node_mass;
