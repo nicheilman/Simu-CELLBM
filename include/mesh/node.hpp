@@ -30,8 +30,6 @@ class node final
 
     private: 
 
-
-
         //Each node has a unique identifier
         unsigned node_id_;
 
@@ -59,9 +57,10 @@ friend class rbc_cell;
         friend class cell_tester;
 
 friend class LBM;
-
+friend class lattice;
         
     protected:
+
 
         ///If we use a contact model that mechanically link the nodes or the faces of adjacent cells
         #if CONTACT_MODEL_INDEX == 1 ||  CONTACT_MODEL_INDEX == 2
@@ -116,6 +115,7 @@ friend class LBM;
         //Indicate wether or not the node is used by a cell
         void set_is_used(const bool is_used) noexcept {is_used_  = is_used;}
 
+
     public:
 
         //Default constructor, everything is set to 0
@@ -132,6 +132,13 @@ friend class LBM;
         explicit node(const double dx, const double dy, const double dz, const unsigned node_id) noexcept;
 
         explicit node(const vec3& pos, const unsigned node_id) noexcept;
+
+//TEST
+vec3 neighbor_base_;
+bool IB_update_flag_ = 0;
+void set_neighbor_base(vec3 neighbor_base){neighbor_base_ = neighbor_base; return;};
+void update_neighbor_base(vec3 neighbor_base) noexcept;
+bool neighbor_base_check() noexcept {return IB_update_flag_;};
         
         //Get the unique identifier of this node
         unsigned get_local_id() const noexcept {return node_id_;}
@@ -227,13 +234,6 @@ friend class LBM;
             void set_momentum(const vec3& momentum) noexcept {momentum_ = momentum;}
         #endif 
 
-//TEST!
-vec3 neighbor_base_; 
-vec3 neighbor_base_memory_; 
-void update_neighbor_base(vec3 neighbor_base){
-    neighbor_base_memory_ = neighbor_base_;
-    neighbor_base_ = neighbor_base; return;}
-bool neighbor_base_check(){return (neighbor_base_ == neighbor_base_memory_);};
 
 };
 

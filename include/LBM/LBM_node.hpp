@@ -15,7 +15,7 @@ class LBM_node: public std::enable_shared_from_this<LBM_node>{
     double dx_, dy_, dz_;
     double p_, u_[3]; 
     double m2;
-    bool internal_;
+    bool internal_, int_mem_;
     int wallflag_, idx_;
 
 // TEST 
@@ -53,11 +53,12 @@ bool need_update_ = 0;
     void set_velocity(std::vector<double> velo){m_[1]=velo[0]*m_[0]; m_[2]=velo[1]*m_[0]; m_[3]=velo[2]*m_[0]; return;}
 void update_velo(std::vector<double> wall_velo){for(int i=0; i<3; i++)velo_[i] = wall_velo[i]; return;}
     void set_internal(bool onoff){ 
-if( (internal_==1) && (onoff==0)) need_update_ = 1;
+	if( (internal_==1) && (int_mem_==1)) return;  //need_update_ = 1;
 	internal_ =  onoff; 
+	int_mem_ = internal_;
 	if(need_update_){
-		set_velocity(velo_);
-		need_update_ = 0;
+		//set_velocity(velo_);
+		//need_update_ = 0;
 		} 
 	return;}
 
@@ -65,7 +66,7 @@ if( (internal_==1) && (onoff==0)) need_update_ = 1;
     void calc_eq();
     void collision(double dt, double fext[3], bool internal);
 
-bool is_internal(std::shared_ptr<cell> cell_ptr, std::array<double, 6> aabb);
+bool is_internal(std::shared_ptr<cell> cell_ptr, std::array<double, 6> aabb, double t);
 double SignedVolume(vec3 a, vec3 b, vec3 c, const vec3 d);
 
 void set_meq(){ m_ = meq; return;}

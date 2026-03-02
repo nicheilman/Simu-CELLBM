@@ -16,6 +16,9 @@ private:
 double accumulate = 0.;
 double IB_accumulate = 0.;
 double NB_accumulate = 0.;
+double coll_accumulate = 0.;
+double stream_accumulate = 0.;
+
  // ------------------------------------------- //
 
     double IB_CoM[3] = {1.0, 0.5*dimensions[1], 0.1*dimensions[2]};

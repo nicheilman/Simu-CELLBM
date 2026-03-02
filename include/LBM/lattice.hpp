@@ -117,7 +117,7 @@ static constexpr int c_i[19][3] = { { 0, 0, 0},  // 0
 
     void stream();
 
-std::vector<std::shared_ptr<LBM_node>> IB_neighbors(node IB_node);
+std::vector<std::shared_ptr<LBM_node>> IB_neighbors(node& IB_node);
 
 };
 
