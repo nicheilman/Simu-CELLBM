@@ -16,7 +16,7 @@
 <numerical_parameters>
     <!-- The mesh file containing the initial configuration <! -->
 
-    <input_mesh_file_path>/data/input_meshes/cluster.vtk</input_mesh_file_path> 
+    <input_mesh_file_path>/data/input_meshes/CTC/six_CTC.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
     <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_move</output_mesh_folder_path> 
@@ -32,7 +32,7 @@
     <damping_coefficient>1.0e-8</damping_coefficient> 
 
     <!-- The total simulation time [T] <! -->
-    <simulation_duration>2.0e-6</simulation_duration> 
+    <simulation_duration>2.0e-3</simulation_duration> 
 
     <!-- The time between each mesh file saving [T]<! -->
     <sampling_period>1.0e-6</sampling_period> 
@@ -41,13 +41,13 @@
     <time_step>1.0e-7</time_step> 
 
     <!-- The minimum edge length allowed [L] <! -->
-    <min_edge_length>2.5e-6</min_edge_length> 
+    <min_edge_length>1.5e-6</min_edge_length> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
     <contact_cutoff_adhesion>1.0e-6</contact_cutoff_adhesion> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
-    <contact_cutoff_repulsion>2e-6</contact_cutoff_repulsion> 
+    <contact_cutoff_repulsion>6.0e-6</contact_cutoff_repulsion> 
 </numerical_parameters>
 
 
@@ -113,7 +113,7 @@
                 <surface_tension>1.0e-3</surface_tension> 
 
                 <!-- The bending elasticity of the cell surface [M L^2 / T^2] <! -->
-                <bending_modulus>1.0e-19</bending_modulus> 
+                <bending_modulus>1.0e-18</bending_modulus> 
             </face_type>
         </face_types>  
     </cell_type>

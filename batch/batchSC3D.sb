@@ -23,7 +23,7 @@ else
 fi
 export OMP_NUM_THREADS=$omp_threads
 
-./build/simucell3d parameters/parameters_move_cell_dist1_test.xml 
+./build/simucell3d parameters/parameters_packed.xml 
 
 seff $SLURM_JOBID
 mv simucell3D-$SLURM_JOBID.out simulation_results/SLURM/
