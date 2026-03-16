@@ -53,7 +53,7 @@ bool need_update_ = 0;
     void set_velocity(std::vector<double> velo){m_[1]=velo[0]*m_[0]; m_[2]=velo[1]*m_[0]; m_[3]=velo[2]*m_[0]; return;}
 void update_velo(std::vector<double> wall_velo){for(int i=0; i<3; i++)velo_[i] = wall_velo[i]; return;}
     void set_internal(bool onoff){ 
-	if( (internal_==1) && (int_mem_==1)) return;  //need_update_ = 1;
+	//if( (internal_==1) && (int_mem_==1)) return;  //need_update_ = 1;
 	internal_ =  onoff; 
 	int_mem_ = internal_;
 	if(need_update_){
@@ -61,6 +61,7 @@ void update_velo(std::vector<double> wall_velo){for(int i=0; i<3; i++)velo_[i] =
 		//need_update_ = 0;
 		} 
 	return;}
+void set_int_mem(bool onoff){int_mem_ = onoff; return;}
 
     void ftom(shared_ptr<lattice> L, bool flag);
     void calc_eq();

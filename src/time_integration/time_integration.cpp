@@ -48,7 +48,7 @@ vec3 mom_temp, dr;
 
                         //Compute the node velocity on the fly and update the node position
                         n1.pos_.translate(n1.momentum_ * (dt_ / c1_node_mass)); 
-
+//dr.reset(0.0, 0.0, 0.5e-6);
 //n1.pos_.translate(dr);
 //n1.momentum_.reset(mom_temp);
 

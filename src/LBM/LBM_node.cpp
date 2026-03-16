@@ -130,9 +130,9 @@ for(auto& face : cell_ptr->get_face_lst() ){
 	c = node_lst_[face.n3_id()].pos();
 
 //TEST
-if(t > 0.){
-if(!octant_check(arrow, a, test_point) && !octant_check(arrow, b, test_point) && !octant_check(arrow, c, test_point)) continue;
-     }
+//if(t > 0.){
+//if(!octant_check(arrow, a, test_point) && !octant_check(arrow, b, test_point) && !octant_check(arrow, c, test_point)) continue;
+//     }
 //face_counter += 1;
 
 	     if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;

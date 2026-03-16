@@ -45,6 +45,7 @@ for(auto& node_ : L_->get_nodes() ){ //
 //NB_accumulate = NB_end - NB_start;
 //printf("Equil took %f seconds\n", NB_accumulate);
 
+node_->set_int_mem(0);
 force_[0] = 0.; force_[1] = 0.; force_[2] = 0.; kernel = 0.;
 
 //----------------Needs to be converted to own function(s)------------------------
@@ -71,21 +72,18 @@ if(cell_->get_cell_type_id() != 2){
     };
 
 }
-else if( int(t/dt_) % 10 == -1){
+else if( int(t/dt_) % 10 == 0){
     for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
 
 if(cell_->get_cell_type_id() != 2){
-    if( (node_->get_pos()[0] >= aabb[0]-2*mesh_space)&&(node_->get_pos()[0] <= aabb[3]+2*mesh_space) &&
-    (node_->get_pos()[1] >= aabb[1]-2*mesh_space)&&(node_->get_pos()[1] <= aabb[4]+2*mesh_space) &&
-    (node_->get_pos()[2] >= aabb[2]-2*mesh_space)&&(node_->get_pos()[2] <= aabb[5]+2*mesh_space)){
-         if(node_->is_internal(cell_,aabb, t)){
-                node_->set_internal(1); break;}
-         else node_->set_internal(0);
+    if( (node_->get_pos()[0] <= aabb[0])&&(node_->get_pos()[0] >= aabb[3]) &&
+    (node_->get_pos()[1] <= aabb[1])&&(node_->get_pos()[1] >= aabb[4]) &&
+    (node_->get_pos()[2] <= aabb[2])&&(node_->get_pos()[2] >= aabb[5])){
+         node_->set_internal(0);
 	    };
 	};
     };
-
 };
 
 //------------------------------
@@ -118,7 +116,7 @@ for(int i =0; i<3; i++) velo_interp[i] = 0.0;
 //TIMER
 //NB_start = omp_get_wtime();
 	if(node_->is_internal(cell_,aabb, t)){
-                node_->set_internal(1); continue;}
+                node_->set_internal(1);}
          else node_->set_internal(0);
 //NB_end = omp_get_wtime();
 //NB_accumulate += NB_end - NB_start;
@@ -193,7 +191,7 @@ if(int(t/dt_) % 5 == -1){
 MeshWriter::writeflagVTK("test2/test_flag_"+to_string((t))+".vtk", flag_mesh, flag_->get_IB_nodes() );
     }
 if(int(t/dt_) % 10 == 0){
-MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_move/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
+MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_17_clustered/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
     }
 
 
