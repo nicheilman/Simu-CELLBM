@@ -74,10 +74,10 @@ if(node_->get_wallflag() == 1){
 
 
     if(almost_equal(node_->get_pos()[0], origin[0])){
-        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 1.0e-10*c_i[i][2] * c );} 
+        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 2.0e-10*c_i[i][2] * c );} 
 	 }
     if(almost_equal(node_->get_pos()[0], domain_size_[0]+origin[0])){
-        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -1.0e-10*c_i[i][2] * c );} 
+        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -2.0e-10*c_i[i][2] * c );} 
 	 }
 
 

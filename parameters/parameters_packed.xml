@@ -16,13 +16,13 @@
 <numerical_parameters>
     <!-- The mesh file containing the initial configuration <! -->
 
-    <input_mesh_file_path>/data/input_meshes/CTC/17_CTC-clustered.vtk</input_mesh_file_path> 
+    <input_mesh_file_path>/data/input_meshes/lil_ball.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
     <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_17_clustered</output_mesh_folder_path> 
 
     <!-- If equals 0 the cells will not be triangulated at the beginning of the simulation \<! -->
-    <perform_initial_triangulation>0</perform_initial_triangulation> 
+    <perform_initial_triangulation>1</perform_initial_triangulation> 
 
     <!-- If set to 1, the triangles with very high aspect ratio will be removed from the mesh \<! -->
     <!-- with the edge swap operation. \<!-->
@@ -35,7 +35,7 @@
     <simulation_duration>1.0e-1</simulation_duration> 
 
     <!-- The time between each mesh file saving [T]<! -->
-    <sampling_period>1.0e-5</sampling_period> 
+    <sampling_period>1.0e-6</sampling_period> 
 
     <!-- The simulation time step [T]<! -->
     <time_step>1.0e-7</time_step> 
