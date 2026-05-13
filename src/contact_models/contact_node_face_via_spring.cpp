@@ -27,7 +27,7 @@ contact_node_face_via_spring::contact_node_face_via_spring(const global_simulati
     interaction_cutoff_square_ = interaction_cutoff_ * interaction_cutoff_;
 
     // The distance between 2 faces where the contact force is maximal, by default it's equal to interaction_cutoff_ / 2
-    hardening_distance_ = sim_parameters.contact_cutoff_adhesion_ * 0.8;
+    hardening_distance_ = sim_parameters.contact_cutoff_adhesion_ * 0.2;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

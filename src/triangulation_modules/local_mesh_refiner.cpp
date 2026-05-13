@@ -76,7 +76,7 @@ void local_mesh_refiner::refine_mesh(cell_ptr c) const noexcept(false){
         }
 
         //If the edge is too short
-        else if(l_ab_squared < l_min_squared_){
+        else if(l_ab_squared < 0.5*l_min_squared_){
 
             //Check that the edge can be merged
             if(can_be_merged(e_ab, c)){
