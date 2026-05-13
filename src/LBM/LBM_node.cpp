@@ -14,7 +14,7 @@ dy_ = dy;
 dz_ = dz;
 wallflag_ = wall_flag;
 internal_ = internal;
-int_mem_ = internal_;
+int_mem_ = 0;
 idx_ = idx;
 
 }
@@ -115,8 +115,8 @@ if(int_mem_ == 1) return 1;
 vec3 test_point(dx_, dy_, dz_);
 
 aabb = cell_ptr->get_aabb();
-vec3 arrow = ((test_point - cell_ptr->compute_centroid() ).normalize()); //*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]));
-vec3 final_point = test_point - arrow*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]));
+vec3 arrow(1.0e-4, 0., 0.); // = ((test_point - cell_ptr->compute_centroid() ).normalize()); //*(4.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]));
+vec3 final_point = test_point + arrow ; // arrow*(40.0*max(max(aabb[3]-aabb[0], aabb[4]-aabb[1]), aabb[5]-aabb[2]));
 
 auto node_lst_ = cell_ptr->get_node_lst();
 int count = 0;
@@ -130,19 +130,18 @@ for(auto& face : cell_ptr->get_face_lst() ){
 	c = node_lst_[face.n3_id()].pos();
 
 //TEST
-//if(t > 0.){
-//if(!octant_check(arrow, a, test_point) && !octant_check(arrow, b, test_point) && !octant_check(arrow, c, test_point)) continue;
-//     }
-//face_counter += 1;
+//vec3 final_point(dx_ - 2.0*(aabb[3] - aabb[0]), dy_, dz_);
+//PRINT THESE \/ \/ \/ 
+//if( (a.dx() < dx_) && (b.dx() < dx_) && (c.dx() < dx_) ) continue;
 
-	     if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ) continue;
+	     if( ((SignedVolume(a, b, c, test_point)>0) != (SignedVolume(a, b, c, final_point)>0)) ){continue;}
         else if( ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,b, c)>0) ) &&
                  ((SignedVolume(test_point, final_point, a, b)>0) == (SignedVolume(test_point, final_point,c, a)>0) ) ) {count += 1;}
     
 	}
 
 //printf("Internal used %d faces\n", face_counter);
-if(count % 2 == 1) return 1;
+if(count % 2 == 1){int_mem_ = 1; return 1;}
 else return 0;
 
 //--------------------------------------------

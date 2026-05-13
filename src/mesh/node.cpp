@@ -84,8 +84,9 @@ void node::reset() noexcept {
 void node::update_neighbor_base(vec3 neighbor_base) noexcept{
 //neighbor_base.print();
 //neighbor_base_.print();
-    this->IB_update_flag_ = ((int)neighbor_base.dx() == (int)neighbor_base_.dx() && (int)neighbor_base.dy() == (int)neighbor_base_.dy() && (int)neighbor_base.dz() == (int)neighbor_base_.dz());
-//if(!IB_update_flag_) (neighbor_base - neighbor_base_).print();
+    this->IB_update_flag_ = ( ((int)neighbor_base.dx() == (int)neighbor_base_.dx()) && ((int)neighbor_base.dy() == (int)neighbor_base_.dy()) && ((int)neighbor_base.dz() == (int)neighbor_base_.dz()) );
+//if(!IB_update_flag_){ std::cout << ( (int)neighbor_base.dx() ) << ( (int)neighbor_base.dy() ) << ( (int)neighbor_base.dz() ) << std::endl;
+//std::cout << ( (int)neighbor_base_.dx() ) << ( (int)neighbor_base_.dy() ) << ( (int)neighbor_base_.dz() ) << std::endl;}
 //std::cout << IB_update_flag_ << std::endl;
     this->set_neighbor_base(neighbor_base);
 	return;}

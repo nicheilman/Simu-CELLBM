@@ -74,10 +74,10 @@ if(node_->get_wallflag() == 1){
 
 
     if(almost_equal(node_->get_pos()[0], origin[0])){
-        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 2.0e-9*c_i[i][2] * c );} 
+        if(c_i[i][0] == 1){node_->set_f_wall(i, bd_flip(i, 0), 1.0e-9*c_i[i][2] * c );} 
 	 }
     if(almost_equal(node_->get_pos()[0], domain_size_[0]+origin[0])){
-        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -2.0e-9*c_i[i][2] * c );} 
+        if(c_i[i][0] == -1){node_->set_f_wall(i, bd_flip(i, 0), -1.0e-9*c_i[i][2] * c );} 
 	 }
 
 
@@ -126,9 +126,9 @@ if( (IB_node.pos().dx()<origin[0]) || (IB_node.pos().dy()<origin[1]) || (IB_node
 
 int node_idx;
 //std::vector<std::shared_ptr<LBM_node>> neighbor_nodes;
-    for(int i=-1; i<3; i++){
-        for(int j=-1; j<3; j++){
-	    for(int k=-1; k<3; k++){
+    for(int i=0; i<2; i++){
+        for(int j=0; j<2; j++){
+	    for(int k=0; k<2; k++){
 		node_idx = ( ( (int)neighbor_base.dx()+i)*mesh_size_[1]*mesh_size_[2]+
                                                    ((int)neighbor_base.dy()+j)*mesh_size_[2]+
                                                     (int)neighbor_base.dz()+k) % num_nodes;

@@ -45,7 +45,6 @@ for(auto& node_ : L_->get_nodes() ){ //
 //NB_accumulate = NB_end - NB_start;
 //printf("Equil took %f seconds\n", NB_accumulate);
 
-node_->set_int_mem(0);
 force_[0] = 0.; force_[1] = 0.; force_[2] = 0.; kernel = 0.;
 
 //----------------Needs to be converted to own function(s)------------------------
@@ -99,7 +98,7 @@ IB_start = omp_get_wtime();
 
 // Only fluid nodes near the IB need to be looked at //
 // Will be best to use Bounding Box //
-#pragma omp parallel for
+//#pragma omp parallel for
 for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
     
@@ -112,7 +111,7 @@ force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
 for(int i =0; i<3; i++) velo_interp[i] = 0.0;
 
     for(auto& node_ : L_->IB_neighbors(IB_node_)){
-	if(!IB_node_.neighbor_base_check()){
+	if(IB_node_.neighbor_base_check()){
 //TIMER
 //NB_start = omp_get_wtime();
 	if(node_->is_internal(cell_,aabb, t)){
@@ -175,6 +174,7 @@ printf("Stream took %f seconds\n", stream_accumulate);
 
 for(auto& node_ : L_->get_nodes()){
     node_->update_f();
+    node_->set_int_mem(0);
     }
 end = omp_get_wtime();
 //TIMER
