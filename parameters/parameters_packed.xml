@@ -19,7 +19,7 @@
     <input_mesh_file_path>/data/input_meshes/CTC/three_CTC.vtk</input_mesh_file_path> 
 
     <!-- The path where the mesh files will be written <! -->
-    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_17_clustered</output_mesh_folder_path> 
+    <output_mesh_folder_path>/mnt/scratch/heilman7/simulation_results/cell_17_stick_2.5</output_mesh_folder_path> 
 
     <!-- If equals 0 the cells will not be triangulated at the beginning of the simulation \<! -->
     <perform_initial_triangulation>1</perform_initial_triangulation> 
@@ -41,10 +41,10 @@
     <time_step>1.0e-7</time_step> 
 
     <!-- The minimum edge length allowed [L] <! -->
-    <min_edge_length>2.0e-6</min_edge_length> 
+    <min_edge_length>1.0e-6</min_edge_length> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
-    <contact_cutoff_adhesion>1.0e-6</contact_cutoff_adhesion> 
+    <contact_cutoff_adhesion>2.5e-6</contact_cutoff_adhesion> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
     <contact_cutoff_repulsion>1.0e-6</contact_cutoff_repulsion> 
@@ -113,7 +113,7 @@
                 <surface_tension>1.0e-3</surface_tension> 
 
                 <!-- The bending elasticity of the cell surface [M L^2 / T^2] <! -->
-                <bending_modulus>1.0e-14</bending_modulus> 
+                <bending_modulus>3.0e-16</bending_modulus> 
             </face_type>
         </face_types>  
     </cell_type>
