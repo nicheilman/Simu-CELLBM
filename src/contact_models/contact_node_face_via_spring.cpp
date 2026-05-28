@@ -218,7 +218,7 @@ void contact_node_face_via_spring::apply_contact_forces(cell_ptr c1, node &n, fa
             // Hardening regime
             if (min_distance >= hardening_distance_)
             {
-                force_amplitude = adherence_strength * (interaction_cutoff_adhesion_ / min_distance - 1) * integration_region;
+                force_amplitude = adherence_strength * (hardening_distance_ / min_distance - 1) * integration_region * -1.0;
 
 #if FACE_STORE_CONTACT_ENERGY
                 adhesion_energy = integration_region * 0.5 * adherence_strength * (0.5 * interaction_cutoff_adhesion_ * interaction_cutoff_adhesion_ - pow(interaction_cutoff_adhesion_ - min_distance, 2));

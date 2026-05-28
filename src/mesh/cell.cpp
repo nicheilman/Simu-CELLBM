@@ -1716,7 +1716,7 @@ void cell::apply_bending_forces() noexcept{
         vec3 f_bend_x2;
         vec3 f_bend_x3;
 
-if(get_cell_type_id() != 5) {
+if(get_cell_type_id() != -1) {
         //Assemble everything together to get the bending forces applied on the nodes of the hinge
         f_bend_x0 = grad_x0_ip * prefactor_1 +  grad_x0_theta * prefactor_2;
         f_bend_x1 = grad_x1_ip * prefactor_1 +  grad_x1_theta * prefactor_2;

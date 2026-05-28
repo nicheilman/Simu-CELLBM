@@ -50,7 +50,7 @@ force_[0] = 0.; force_[1] = 0.; force_[2] = 0.; kernel = 0.;
 //----------------Needs to be converted to own function(s)------------------------
 
 //------------------------------
-if(t == 0.){
+if(t == -1.){
 for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
 
@@ -71,7 +71,7 @@ if(cell_->get_cell_type_id() != 2){
     };
 
 }
-else if( int(t/dt_) % 10 == 0){
+else if( int(t/dt_) % 10 == -1){
     for(auto& cell_ : cell_lst){
     aabb = cell_->get_aabb();
 
@@ -111,7 +111,7 @@ force_[0] = 0.; force_[1] = 0.; force_[2] = 0.;
 for(int i =0; i<3; i++) velo_interp[i] = 0.0;
 
     for(auto& node_ : L_->IB_neighbors(IB_node_)){
-	if(IB_node_.neighbor_base_check()){
+	if(0){ //IB_node_.neighbor_base_check()){
 //TIMER
 //NB_start = omp_get_wtime();
 	if(node_->is_internal(cell_,aabb, t)){
@@ -191,7 +191,7 @@ if(int(t/dt_) % 5 == -1){
 MeshWriter::writeflagVTK("test2/test_flag_"+to_string((t))+".vtk", flag_mesh, flag_->get_IB_nodes() );
     }
 if(int(t/dt_) % 10 == 0){
-MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_17_clustered/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
+MeshWriter::writeVTK("/mnt/scratch/heilman7/simulation_results/cell_17_stick_2.5/test_mesh_"+to_string(int(t/dt_/10))+".vtk", mesh, L_->get_nodes() );
     }
 
 
