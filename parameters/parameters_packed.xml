@@ -44,7 +44,7 @@
     <min_edge_length>1.0e-6</min_edge_length> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
-    <contact_cutoff_adhesion>2.5e-6</contact_cutoff_adhesion> 
+    <contact_cutoff_adhesion>1.8e-6</contact_cutoff_adhesion> 
 
     <!-- The interaction cutoff distance above which cell-cell adhesions forces are 0[L]<! -->
     <contact_cutoff_repulsion>1.0e-6</contact_cutoff_repulsion> 
@@ -67,7 +67,7 @@
         <cell_bulk_modulus>2.5e5</cell_bulk_modulus> 
 
         <!-- The maximal inner pressure of a cell. Set to INF to have no pressure limit [M / (T^2 L)] <! -->
-        <max_inner_pressure>1.0e3</max_inner_pressure> 
+        <max_inner_pressure>INF</max_inner_pressure> 
 
         <!-- Growth rate = cellDivisionTargetVolume / cellCycleDuration [L^3 / T] Default: 3e-12 <! -->
         <avg_growth_rate>0.0e-12</avg_growth_rate> 
@@ -90,7 +90,7 @@
         <!-- If the absolute value of the mean curvature at a point is above this value, then the point cannot be coupled to another cell surface [1 / L] <! -->
         <surface_coupling_max_curvature>1.0e6</surface_coupling_max_curvature>
 
-        <FENE_stiffness>5.0e-4</FENE_stiffness>
+        <FENE_stiffness>1.0e-3</FENE_stiffness>
 
         <!-- Growth rate = cellDivisionTargetVolume / cellCycleDuration [L^3 / T]<! -->
         <!-- If the cell reach this volume we delete it[L^3]<! -->
@@ -113,7 +113,7 @@
                 <surface_tension>1.0e-3</surface_tension> 
 
                 <!-- The bending elasticity of the cell surface [M L^2 / T^2] <! -->
-                <bending_modulus>3.0e-16</bending_modulus> 
+                <bending_modulus>3.0e-15</bending_modulus> 
             </face_type>
         </face_types>  
     </cell_type>
