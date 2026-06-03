@@ -30,6 +30,7 @@ cout << "CellBM is running!" << endl;
 
 array<double, 6> aabb;
 double velo_interp[3];
+double force_temp[3];
 
 vec3 F;
 std::vector<double> zero = {0., 0., 0.};
@@ -136,6 +137,22 @@ if(node_->get_internal() == 1) continue;
 
     for(int i=0; i<3; i++) force_[i] = ( (IB_node_.momentum()).to_array()[i] - velo_interp[i] );
 
+for(auto& node_ : L_->IB_neighbors(IB_node_)){
+dist_x = (node_->get_pos()[0] - IB_node_.pos().dx()) ;
+        dist_y = (node_->get_pos()[1] - IB_node_.pos().dy()) ;
+        dist_z = (node_->get_pos()[2] - IB_node_.pos().dz()) ;
+
+        dist = dist_x*dist_x + dist_y*dist_y + dist_z*dist_z;
+
+        if(dist <= 4*mesh_space*mesh_space) {
+            kernel = (1 - abs( dist_x/mesh_space/2)) * (1 - abs( dist_y/mesh_space/2)) * (1 - abs( dist_z/mesh_space/2));}
+	else{kernel = 0;}
+
+	for(int i=0; i<3; i++) force_temp[i] = force_[i] * kernel * 1.0e-2; 
+
+		node_->add_force(force_temp);
+	}
+
 	    F.reset(-1.*force_[0], -1.*force_[1], -1.*force_[2]);
 	    IB_node_.add_force(F);
 //(IB_node_.momentum()).print();
@@ -161,6 +178,7 @@ for(auto& node_ : L_->get_nodes() ){
 
     node_->ftom(L_, 1);
 
+node_->reset_force();
 }
 coll_end = omp_get_wtime();
 coll_accumulate += coll_end - coll_start;
